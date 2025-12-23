@@ -2,6 +2,7 @@ const fs = require("fs");
 const parser = require("@babel/parser");
 
 let code = "";
+process.stdin.setEncoding("utf8");
 process.stdin.on("data", chunk => code += chunk);
 process.stdin.on("end", () => {
   try {

@@ -1,6 +1,6 @@
 __pycache__
 node_modules
-biginputs
 
 *.ast
 ast.json
+biginputs/*.js

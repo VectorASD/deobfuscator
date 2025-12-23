@@ -2,6 +2,7 @@ const fs = require("fs");
 const generator = require("@babel/generator").default;
 
 let json = "";
+process.stdin.setEncoding("utf8");
 process.stdin.on("data", chunk => json += chunk);
 process.stdin.on("end", () => {
   try {
