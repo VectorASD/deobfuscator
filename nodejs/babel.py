@@ -12,6 +12,7 @@ import subprocess
 import json
 import os
 import shutil
+import pickle
 
 NODE = shutil.which("node")
 if NODE is None:
@@ -36,6 +37,25 @@ def communicator(path: tuple[str, str], input: str = None, name: str = "Communic
 def babel_parse(code: str) -> dict:
     output = communicator((NODE, "parse.js"), code, "Parser")
     return json.loads(output)
+
+def babel_parse_with_cache(path: str):
+    cache_path = path + ".ast"
+    mtime = os.stat(path).st_mtime
+    if os.path.exists(cache_path):
+        with open(cache_path, "rb") as file:
+            mtime2, ast = pickle.load(file)
+            if mtime2 == mtime:
+                print(f"=== Parsing {os.path.basename(path)!r} (from .ast) ===")
+                return ast
+
+    print(f"=== Parsing {os.path.basename(path)!r} (from .js) ===")
+    with open(path, "r", encoding="utf-8") as file:
+        code = file.read()
+    ast = babel_parse(code)
+
+    with open(cache_path, "wb") as file:
+        pickle.dump((mtime, ast), file)
+    return ast
 
 def babel_generate(ast: dict) -> str:
     output = communicator((NODE, "generate.js"), json.dumps(ast), "Generator")
