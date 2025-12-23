@@ -172,6 +172,10 @@ aliases = {
     ("WithStatement", "body"): "Statement",
     ("WithStatement", "object"): "Expression",
     ("YieldExpression", "argument"): "Expression|null",
+
+    # undocumented in https://github.com/babel/babel/blob/main/packages/babel-parser/ast/spec.md
+    ("File", "program"):  "Program",
+    ("File", "comments"): "[CommentBlock|CommentLine]",
 }
 supers = {
     "SourceLocation": None,
@@ -291,6 +295,11 @@ supers = {
     "FunctionExpression":      ["Function",     "Expression"],
     "ClassExpression":         ["Class",        "Expression"],
     "ObjectMethod":            ["ObjectMember", "Function"],
+
+    # undocumented in https://github.com/babel/babel/blob/main/packages/babel-parser/ast/spec.md
+    "File":         ["Node"],
+    "CommentBlock": ["Node"],
+    "CommentLine":  ["Node"],
 }
 
 
